@@ -18,5 +18,6 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
     protected String[] getServletMappings() {
         return new String[] { "/" };
     }
+    //butun istekler frontcontroller a geliyor
 
 }

@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class TodoDao {
 
 		final Session session = sessionFactory.getCurrentSession();
 		final Criteria criteria = session.createCriteria(Todo.class);
+		
+//		final Criteria criteria = session.createCriteria(User.class);
+//		criteria.add(Restrictions.idEq(13L)); //where id == 13
+//		criteria.setFetchMode("todos", FethcMode.JOIN);		//eager Loading		
+//				
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setFetchMode("*", FetchMode.JOIN);
 
