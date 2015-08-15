@@ -16,26 +16,50 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import tr.lkd.lyk2015.springtodo.view.ThymeleafLayoutInterceptor;
+
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
-@ComponentScan("tr.lkd.lyk2015.springtodo")
-@PropertySource("classpath:error.properties")
-public class WebConfig extends WebMvcConfigurationSupport {
+@ComponentScan("tr.lkd.lyk2015.springtodo")		//dependency injection icin   //service controller repository component anatotati onlari ekliyor
+@PropertySource("classpath:error.properties")	//errorlari paketliyor
+public class WebConfig extends WebMvcConfigurerAdapter {
 
-	@Bean
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new ThymeleafLayoutInterceptor());
+	}
+
+	
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		
+		registry.addResourceHandler("/resources/**").addResourceLocations("/static/");
+		
+	}
+
+
+
+	@Bean			//bean annotation ???
 	@Description("Thymeleaf template resolver serving HTML 5")
 	public ServletContextTemplateResolver templateResolver() {
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
 		templateResolver.setPrefix("/WEB-INF/html/");
+		//bunu yaptigimiz icin html olarak aliyor jsp olarak da alabilir
+		//templateResolver ThymeLeaf den geliyor jsp kullansaydik onun resolver ini almamiz gerekecekti
 		templateResolver.setSuffix(".html");
 		templateResolver.setTemplateMode("LEGACYHTML5");
 		templateResolver.setCharacterEncoding("UTF-8");
+		templateResolver.setCacheable(false);
 
 		return templateResolver;
 	}
@@ -58,7 +82,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
 		return viewResolver;
 	}
 
-	@Bean(name = "dataSource")
+	@Bean(name = "dataSource")   //hibernate
 	public DataSource getDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
@@ -82,7 +106,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
 
 		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 
-		sessionBuilder.scanPackages("tr.lkd.lyk2015.springtodo");
+		sessionBuilder.scanPackages("tr.lkd.lyk2015.springtodo");		//entity lere bakip buluyor
 		sessionBuilder.addProperties(getHibernateProperties());
 
 		return sessionBuilder.buildSessionFactory();
@@ -91,12 +115,21 @@ public class WebConfig extends WebMvcConfigurationSupport {
 	private Properties getHibernateProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-		properties.put("hibernate.hbm2ddl.auto", "create");
+		properties.put("hibernate.hbm2ddl.auto", "update");
 		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.format_sql", "true");
 		properties.put("hibernate.use_sql_comments", "true");
 		properties.put("hibernate.enable_lazy_load_no_trans", "true");
 		return properties;
 	}
+
+//	@Override
+//	protected void addInterceptors(InterceptorRegistry registry) {
+//		
+//		
+//		registry.addInterceptor(new ThymeleafLayoutInterceptor());
+//	}
+//	
+	
 
 }

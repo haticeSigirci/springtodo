@@ -1,0 +1,46 @@
+
+<html>
+<body>
+	<div th:fragment="content">
+
+		<div class="form-group">
+
+			<form action="#" th:action="@{/todo/update}" th:object="${todo}"
+				method="post">
+
+				<div class="col-xs-3">
+
+					<p>
+						<b>Name:</b> <input type="text" class="form-control" th:value="${todo.name}" th:field="*{name}" />
+					</p>
+					<p>
+						<b>Description:</b> <input type="text"
+							class="form-control" th:value="${todo.desc}" th:field="*{desc}" />
+					</p>
+					<p>
+						<b>Date:</b> <input type="date" class="form-control" th:value="${todo.dueDate.getTime()}" th:field="*{dueDate}" />
+					</p>
+
+					
+
+						<p> <!-- change  -->
+							<b><input type="checkbox" class="checkbox" name=
+								"done" th:checked="${todo.done}" /></b> <input type="hidden"
+								name="id" th:value="${todo.id}" />
+						<p>
+					
+					<p>
+					<input type="submit" class="btn btn-primary" value="Update" />
+					</p>
+
+				</div>
+
+			</form>
+
+		</div>
+
+		<p th:text="${message}" th:if="${message} != null" />
+
+	</div>
+</body>
+</html>

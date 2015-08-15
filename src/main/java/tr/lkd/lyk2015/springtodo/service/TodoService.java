@@ -40,14 +40,15 @@ public class TodoService implements Serializable {
 
 		return todoDao.getById(id);
 	}
-
-	public Long update(final Todo todo) {
+	
+	
+	public Todo update(final Todo todo) { //dao
 
 		if (todo == null) {
 			throw new RuntimeException("Model cannot be null");
 		}
 
-		return todoDao.update(todo);
+		return (Todo) todoDao.update(todo);
 	}
 
 	public List<Todo> getAll() {

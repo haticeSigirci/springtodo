@@ -19,7 +19,7 @@ import tr.lkd.lyk2015.springtodo.model.Todo;
 @Repository
 public class TodoDao {
 
-	@Autowired
+	@Autowired			//bununla pull dan cikariyorum
 	protected SessionFactory sessionFactory;
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -29,14 +29,16 @@ public class TodoDao {
 		return (Long) session.save(todo);
 	}
 
+	//orm sorgu
+	
 	public Todo getById(final Long id) {
 		final Session session = sessionFactory.getCurrentSession();
 		return (Todo) session.get(Todo.class, id);
 	}
 
-	public Long update(final Todo todo) {
+	public Todo update(final Todo todo) {
 		final Session session = sessionFactory.getCurrentSession();
-		return (Long) session.merge(todo);
+		return (Todo) session.merge(todo);
 	}
 
 	@SuppressWarnings("unchecked")

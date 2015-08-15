@@ -1,5 +1,44 @@
-<h1>Spring</h1>
+<div th:fragment="content">
 
-<ul>
-	<li th:each="todo : ${todoList}"><p th:text="${todo.name}"></p></li>
+<h1>Spring</h1>
+<ul class="list-group"> <!--  class="list-inline" -->
+	<li class="list-group-item" th:each="todo : ${todoList}">
+
+		<div th:if="${todo.done}">
+			<b>Name:</b><strike><p th:text="${todo.name}"></p></strike> 
+			<b>Desc:</b><strike><p th:text="${todo.desc}"></p><strike> 
+			<b>Date:</b><strike><p th:text="${todo.date}"></p><strike>
+		</div>
+
+		<div th:if="${!todo.done}">
+			<b>Name:</b><p th:text="${todo.name}"></p>
+			<b>Desc:</b><p th:text="${todo.desc}"></p>
+			<b>Date:</b><p th:text="${todo.date}"></p>
+		</div>
+
+		<form action="#" th:action="@{/todo/mark}" th:object="${todo}"
+			method="post">
+			<input type="hidden" name="id" th:value="${todo.id}" /> 
+			<input type="checkbox" name="done" th:checked="${todo.done}" /> 
+			<p>
+			<input type="submit" class="btn btn-primary" value="Done" />
+			</p>
+		</form>
+		
+		
+		<form action="#" th:action="@{/todo/edit}" th:object="${todo}" method="get">
+			<input type="hidden" name="id" th:value="${todo.id}" /> 
+			<p>
+			<input type="submit" class="btn btn-primary" value="Edit" />
+			</p>
+		</form>
+	</li>
 </ul>
+</div>
+<!-- Hidden field id action=/todo/mark method=post 
+	@ModelAttributeTodo todo
+	id and done
+	
+	Todo objesi bind
+
+-->

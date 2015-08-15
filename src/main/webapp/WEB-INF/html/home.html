@@ -1,5 +1,14 @@
-<h1>Todo Application</h1>
 
-<p th:text="${message}"></p>
+<div th:fragment="content">
 
-<p th:inline="text">This is the [[${message}]]</p>
+	<div class="page-header">
+
+		<h1 th:text="${message}">Sticky footer with fixed navbar</h1>
+
+	</div>
+
+	<p class="lead" th:inline="text">This is the [[${message}]]</p>
+
+	<!-- Thymeleaf template -->
+
+</div>

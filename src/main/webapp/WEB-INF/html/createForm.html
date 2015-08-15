@@ -1,4 +1,26 @@
-<form action="#" th:action="@{/todo/create}" th:object="${todo}" method="post">
-    <p>Name: <input type="text" th:field="*{name}" /></p>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-</form>
+<div th:fragment="content">
+	<div class="form-group">
+		<form action="#" th:action="@{/todo/create}" th:object="${todo}"
+			method="post">
+			<div class="col-xs-3">
+				<p>
+					Name: <input type="text" class="form-control"
+						placeholder=".col-xs-3" th:field="*{name}" />
+				</p>
+				<p>
+					Desc: <input type="text" class="form-control"
+						placeholder=".col-xs-3" th:field="*{desc}" />
+				</p>
+				<p>
+					Date: <input type="date" class="form-control"
+						placeholder=".col-xs-3" th:field="*{dueDate}" />
+				</p>
+				<p>
+					<input type="submit" class="btn btn-primary" value="Submit" /> <input
+						type="reset" class="btn btn-primary" value="Reset" />
+				</p>
+				<li th:each="e : ${#fields.detailedErrors()}"></li>
+			</div>
+		</form>
+	</div>
+</div>
